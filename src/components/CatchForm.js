@@ -7,11 +7,48 @@ export default class CatchForm extends Component {
     super(props);
 
     this.state = {
-      id: 0,
+      _id: 0,
       pokemon: '',
-      description: ''
+      description: '',
+      lat: 0,
+      lng: 0
     };
   }
+
+  static getDerivedStateFromProps(newProps, prevState) {
+    if (newProps.pickedCatch) {
+      const c = newProps.pickedCatch;
+      if (c._id !== prevState._id) {
+        return {
+          _id: c._id,
+          pokemon: c.pokemon,
+          description: c.description,
+          lat: c.lat,
+          lng: c.lng
+        };
+      }
+    } else if (newProps.pickedLocation) {
+      if (prevState._id) {
+        return {
+          _id: 0,
+          pokemon: '',
+          description: '',
+          lat: newProps.pickedLocation.lat,
+          lng: newProps.pickedLocation.lng
+        };
+      } else if (
+        prevState.lat !== newProps.pickedLocation.lat ||
+        prevState.lng !== newProps.pickedLocation.lng
+      ) {
+        return {
+          lat: newProps.pickedLocation.lat,
+          lng: newProps.pickedLocation.lng
+        };
+      }
+    }
+    return null;
+  }
+
   onChange = event => {
     let state = {};
     state[event.target.name] = event.target.value;
@@ -23,26 +60,81 @@ export default class CatchForm extends Component {
     if (this.state.pokemon.length === 0) {
       return;
     }
+
+    this.props.resetPicks();
+
     const newCatch = {
-      _id: this.state.id,
+      _id: this.state._id,
       pokemon: this.state.pokemon,
       description: this.state.description,
-      lat: this.props.newLocation.lat,
-      lng: this.props.newLocation.lng
+      lat: this.state.lat,
+      lng: this.state.lng
     };
 
-    this.props.addCatch(newCatch);
-
+    if (newCatch._id) {
+      this.props.updateCatch(newCatch);
+    } else {
+      this.props.addCatch(newCatch);
+    }
     this.setState({
-      id: 0,
+      _id: 0,
       pokemon: '',
-      description: ''
+      description: '',
+      lat: 0,
+      lng: 0
     });
   };
+
+  delete = () => {
+    if (this.state._id) {
+      this.props.resetPicks();
+      this.props.deleteCatch(this.state._id);
+      this.setState({
+        _id: 0,
+        pokemon: '',
+        description: '',
+        lat: 0,
+        lng: 0
+      });
+    }
+  };
+
+  cancel = () => {
+    this.props.resetPicks();
+    this.setState({
+      _id: 0,
+      pokemon: '',
+      description: '',
+      lat: 0,
+      lng: 0
+    });
+  };
+
+  renderButtons() {
+    if (this.props.pickedCatch) {
+      return (
+        <div>
+          <Button onClick={this.submit}>Save</Button>
+          <Button onClick={this.delete}>Delete</Button>
+          <Button onClick={this.cancel}>Cancel</Button>
+        </div>
+      );
+    } else if (this.props.pickedLocation) {
+      return (
+        <div>
+          <Button onClick={this.submit}>Create</Button>
+          <Button onClick={this.cancel}>Cancel</Button>
+        </div>
+      );
+    }
+  }
 
   render() {
     return (
       <Form id="catch_form">
+        <p>lat: {this.state.lat}</p>
+        <p>lng: {this.state.lng}</p>
+
         <Form.Field>
           <label>Pokemon</label>
           <input
@@ -52,13 +144,6 @@ export default class CatchForm extends Component {
             value={this.state.pokemon}
           />
         </Form.Field>
-        {this.props.newLocation ? (
-          <p>
-            lat: {this.props.newLocation.lat} lng: {this.props.newLocation.lng}
-          </p>
-        ) : (
-          <p />
-        )}
         <Form.Field>
           <label>Decription</label>
           <textarea
@@ -68,9 +153,7 @@ export default class CatchForm extends Component {
             form="tasks_form"
           />
         </Form.Field>
-        <Button type="submit" onClick={this.submit}>
-          Submit
-        </Button>
+        {this.renderButtons()}
       </Form>
     );
   }

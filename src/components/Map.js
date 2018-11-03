@@ -20,7 +20,11 @@ export default class Map extends Component {
 
   handleClick = e => {
     this.setState({ latlng: { lat: e.latlng.lat, lng: e.latlng.lng } });
-    this.props.pickLocation(e.latlng.lat, e.latlng.lng);
+    this.props.pickNewLocation(e.latlng.lat, e.latlng.lng);
+  };
+
+  handleMarkerClick = e => {
+    this.props.pickOldCatch(e.target.options.id);
   };
 
   render() {
@@ -32,8 +36,23 @@ export default class Map extends Component {
         onClick={this.handleClick}
       >
         {this.props.catches.map(c => (
-          <Marker key={c._id} position={[c.lat, c.lng]} />
+          <Marker
+            key={c._id}
+            id={c._id}
+            opacity={0.7}
+            position={[c.lat, c.lng]}
+            onClick={this.handleMarkerClick}
+          />
         ))}
+        {this.props.pickedLocation ? (
+          <Marker
+            position={[
+              this.props.pickedLocation.lat,
+              this.props.pickedLocation.lng
+            ]}
+          />
+        ) : null}
+
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

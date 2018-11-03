@@ -11,10 +11,22 @@ export default class Main extends Component {
         <Grid container>
           <Grid.Row>
             <Grid.Column width={10}>
-              <Map catches={this.props.catches} pickLocation={this.props.pickLocation}/>
+              <Map
+                catches={this.props.catches}
+                pickNewLocation={this.props.pickNewLocation}
+                pickOldCatch={this.props.pickOldCatch}
+                pickedLocation={this.props.pickedLocation}
+              />
             </Grid.Column>
             <Grid.Column width={6}>
-              <CatchForm addCatch={this.props.addCatch} newLocation={this.props.newLocation} />
+              <CatchForm
+                addCatch={this.props.addCatch}
+                updateCatch={this.props.updateCatch}
+                deleteCatch={this.props.deleteCatch}
+                pickedLocation={this.props.pickedLocation}
+                pickedCatch={this.props.pickedCatch}
+                resetPicks={this.props.resetPicks}
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>

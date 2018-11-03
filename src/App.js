@@ -7,7 +7,8 @@ class App extends Component {
     super(props);
     this.state = {
       catches: [],
-      newLocation: null
+      pickedLocation: null,
+      pickedCatch: null
     };
   }
 
@@ -15,8 +16,28 @@ class App extends Component {
     this.getCatches();
   }
 
-  pickLocation = (lat, lng) => {
-    this.setState({ newLocation: { lat, lng } });
+  resetPicks = () => {
+    this.setState({
+      pickedCatch: null,
+      pickedLocation: null
+    });
+  };
+
+  pickOldCatch = id => {
+    const catches = this.state.catches;
+    for (let i = 0; i < catches.length; i++) {
+      if (catches[i]._id === id) {
+        this.setState({
+          pickedCatch: Object.assign({}, catches[i]),
+          pickedLocation: null
+        });
+        return;
+      }
+    }
+  };
+
+  pickNewLocation = (lat, lng) => {
+    this.setState({ pickedLocation: { lat, lng }, pickedCatch: null });
   };
 
   getCatches = () => {
@@ -60,7 +81,49 @@ class App extends Component {
       .then(response => {
         if (response.ok) {
           this.getCatches();
+        } else {
+          console.warn('Server responded with status: ' + response.status);
+        }
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  };
 
+  updateCatch = newData => {
+    const updateCatch = {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newData)
+    };
+
+    fetch('/api/catches/' + newData._id, updateCatch)
+      .then(response => {
+        if (response.ok) {
+          this.getCatches();
+        } else {
+          console.warn('Server responded with status: ' + response.status);
+        }
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  };
+
+  deleteCatch = id => {
+    const deleteCatch = {
+      method: 'DELETE',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch('/api/catches/' + id, deleteCatch)
+      .then(response => {
+        if (response.ok) {
+          this.getCatches();
         } else {
           console.warn('Server responded with status: ' + response.status);
         }
@@ -75,9 +138,14 @@ class App extends Component {
       <div className="App">
         <Main
           addCatch={this.addCatch}
+          updateCatch={this.updateCatch}
+          deleteCatch={this.deleteCatch}
           catches={this.state.catches}
-          newLocation={this.state.newLocation}
-          pickLocation={this.pickLocation}
+          pickedLocation={this.state.pickedLocation}
+          pickNewLocation={this.pickNewLocation}
+          pickedCatch={this.state.pickedCatch}
+          pickOldCatch={this.pickOldCatch}
+          resetPicks={this.resetPicks}
         />
       </div>
     );
