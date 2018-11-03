@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Grid, Form, Button } from 'semantic-ui-react';
+import PokeProfile from './PokeProfile';
 import './CatchForm.js';
 
 export default class CatchForm extends Component {
@@ -19,6 +20,7 @@ export default class CatchForm extends Component {
     if (newProps.pickedCatch) {
       const c = newProps.pickedCatch;
       if (c._id !== prevState._id) {
+        newProps.updatePokeData(c.pokemon);
         return {
           _id: c._id,
           pokemon: c.pokemon,
@@ -29,6 +31,7 @@ export default class CatchForm extends Component {
       }
     } else if (newProps.pickedLocation) {
       if (prevState._id) {
+        newProps.resetPokeData();
         return {
           _id: 0,
           pokemon: '',
@@ -53,7 +56,11 @@ export default class CatchForm extends Component {
     let state = {};
     state[event.target.name] = event.target.value;
     this.setState(state);
+    if (event.target.name === 'pokemon' && event.target.value.length > 0) {
+      this.props.updatePokeData(event.target.value);
+    }
   };
+
 
   submit = () => {
     // Validation
@@ -62,6 +69,7 @@ export default class CatchForm extends Component {
     }
 
     this.props.resetPicks();
+    this.props.resetPokeData();
 
     const newCatch = {
       _id: this.state._id,
@@ -88,6 +96,7 @@ export default class CatchForm extends Component {
   delete = () => {
     if (this.state._id) {
       this.props.resetPicks();
+      this.props.resetPokeData();
       this.props.deleteCatch(this.state._id);
       this.setState({
         _id: 0,
@@ -101,6 +110,7 @@ export default class CatchForm extends Component {
 
   cancel = () => {
     this.props.resetPicks();
+    this.props.resetPokeData();
     this.setState({
       _id: 0,
       pokemon: '',
@@ -131,30 +141,41 @@ export default class CatchForm extends Component {
 
   render() {
     return (
-      <Form id="catch_form">
-        <p>lat: {this.state.lat}</p>
-        <p>lng: {this.state.lng}</p>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={8}>
+            <Form id="catch_form">
+              <p>lat: {this.state.lat}</p>
+              <p>lng: {this.state.lng}</p>
 
-        <Form.Field>
-          <label>Pokemon</label>
-          <input
-            type="text"
-            name="pokemon"
-            onChange={this.onChange}
-            value={this.state.pokemon}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Decription</label>
-          <textarea
-            name="description"
-            onChange={this.onChange}
-            value={this.state.description}
-            form="tasks_form"
-          />
-        </Form.Field>
-        {this.renderButtons()}
-      </Form>
+              <Form.Field>
+                <label>Pokemon</label>
+                <input
+                  type="text"
+                  name="pokemon"
+                  onChange={this.onChange}
+                  value={this.state.pokemon}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Decription</label>
+                <textarea
+                  name="description"
+                  onChange={this.onChange}
+                  value={this.state.description}
+                  form="tasks_form"
+                />
+              </Form.Field>
+              {this.renderButtons()}
+            </Form>
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <PokeProfile
+              pokemon={this.props.pokeData}
+            />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }

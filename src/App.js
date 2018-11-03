@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import Main from './components/Main.js';
+import Pokedex from 'pokedex-promise-v2';
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
+    this.pokedex = new Pokedex({
+      protocol: 'https',
+      cache: true
+    });
     this.state = {
       catches: [],
       pickedLocation: null,
-      pickedCatch: null
+      pickedCatch: null,
+      pokeData: null
     };
   }
 
@@ -22,6 +29,22 @@ class App extends Component {
       pickedLocation: null
     });
   };
+
+  resetPokeData = () => {
+    this.setState({ pokeData: null });
+  };
+
+  updatePokeData = _.debounce(pokeName => {
+    this.pokedex
+      .getPokemonByName(pokeName)
+      .then(response => {
+        this.setState({ pokeData: response });
+      })
+      .catch(error => {
+        console.error(error);
+        this.setState({ pokeData: null });
+      });
+  }, 300);
 
   pickOldCatch = id => {
     const catches = this.state.catches;
@@ -146,6 +169,9 @@ class App extends Component {
           pickedCatch={this.state.pickedCatch}
           pickOldCatch={this.pickOldCatch}
           resetPicks={this.resetPicks}
+          pokeData={this.state.pokeData}
+          updatePokeData={this.updatePokeData}
+          resetPokeData={this.resetPokeData}
         />
       </div>
     );

@@ -10,7 +10,7 @@ export default class Main extends Component {
       <div>
         <Grid container>
           <Grid.Row>
-            <Grid.Column width={10}>
+            <Grid.Column width={8}>
               <Map
                 catches={this.props.catches}
                 pickNewLocation={this.props.pickNewLocation}
@@ -18,7 +18,7 @@ export default class Main extends Component {
                 pickedLocation={this.props.pickedLocation}
               />
             </Grid.Column>
-            <Grid.Column width={6}>
+            <Grid.Column width={8}>
               <CatchForm
                 addCatch={this.props.addCatch}
                 updateCatch={this.props.updateCatch}
@@ -26,6 +26,9 @@ export default class Main extends Component {
                 pickedLocation={this.props.pickedLocation}
                 pickedCatch={this.props.pickedCatch}
                 resetPicks={this.props.resetPicks}
+                pokeData={this.props.pokeData}
+                updatePokeData={this.props.updatePokeData}
+                resetPokeData={this.props.resetPokeData}
               />
             </Grid.Column>
           </Grid.Row>
