@@ -1,30 +1,44 @@
 import React, { Component } from 'react';
+import { Circle, Map as LeafletMap, TileLayer, Marker } from 'react-leaflet';
+
 import './Map.css';
-import { Map as LeafletMap, Marker, Popup, TileLayer } from 'react-leaflet';
+
+const HERE = {
+  lat: 60.21172186425134,
+  lng: 24.817264974117283
+};
+
+const center = [HERE.lat, HERE.lng];
 
 export default class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 51.505,
-      lng: -0.09,
-      zoom: 13
+      latlng: HERE
     };
   }
 
+  handleClick = e => {
+    this.setState({ latlng: { lat: e.latlng.lat, lng: e.latlng.lng } });
+    this.props.pickLocation(e.latlng.lat, e.latlng.lng);
+  };
+
   render() {
-    const position = [this.state.lat, this.state.lng];
     return (
-      <LeafletMap id="leaflet-map" center={position} zoom={this.state.zoom}>
+      <LeafletMap
+        id="leaflet-map"
+        center={center}
+        zoom={13}
+        onClick={this.handleClick}
+      >
+        {this.props.catches.map(c => (
+          <Marker key={c._id} position={[c.lat, c.lng]} />
+        ))}
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={position}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
+        <Circle center={center} fillColor="blue" radius={400} />
       </LeafletMap>
     );
   }
