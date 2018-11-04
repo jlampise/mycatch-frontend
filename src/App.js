@@ -40,7 +40,7 @@ class App extends Component {
       .then(response => {
         this.setState({ pokeData: response });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
         this.setState({ pokeData: null });
       });

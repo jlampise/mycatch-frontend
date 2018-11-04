@@ -145,9 +145,6 @@ export default class CatchForm extends Component {
         <Grid.Row>
           <Grid.Column width={8}>
             <Form id="catch_form">
-              <p>lat: {this.state.lat}</p>
-              <p>lng: {this.state.lng}</p>
-
               <Form.Field>
                 <label>Pokemon</label>
                 <input
@@ -155,6 +152,24 @@ export default class CatchForm extends Component {
                   name="pokemon"
                   onChange={this.onChange}
                   value={this.state.pokemon}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Latitude</label>
+                <input
+                  disabled
+                  type="text"
+                  name="latitude"
+                  value={this.state.lat}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Longitude</label>
+                <input
+                  disabled
+                  type="text"
+                  name="longitude"
+                  value={this.state.lng}
                 />
               </Form.Field>
               <Form.Field>
