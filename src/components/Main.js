@@ -16,6 +16,7 @@ export default class Main extends Component {
                 pickNewLocation={this.props.pickNewLocation}
                 pickOldCatch={this.props.pickOldCatch}
                 pickedLocation={this.props.pickedLocation}
+                pickedCatch={this.props.pickedCatch}
               />
             </Grid.Column>
             <Grid.Column width={8}>
@@ -29,6 +30,7 @@ export default class Main extends Component {
                 pokeData={this.props.pokeData}
                 updatePokeData={this.props.updatePokeData}
                 resetPokeData={this.props.resetPokeData}
+                allPokeList={this.props.allPokeList}
               />
             </Grid.Column>
           </Grid.Row>

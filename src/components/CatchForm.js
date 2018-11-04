@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Form, Button } from 'semantic-ui-react';
+import { Grid, Form, Button, Dropdown } from 'semantic-ui-react';
 import PokeProfile from './PokeProfile';
 import './CatchForm.js';
 
@@ -12,8 +12,21 @@ export default class CatchForm extends Component {
       pokemon: '',
       description: '',
       lat: 0,
-      lng: 0
+      lng: 0,
+      pokeOptions: []
     };
+  }
+  componentDidUpdate() {
+    if (
+      this.state.pokeOptions.length === 0 &&
+      this.props.allPokeList.length > 0
+    ) {
+      this.setState({
+        pokeOptions: this.props.allPokeList.map(pokemon => {
+          return { key: pokemon, value: pokemon, text: pokemon };
+        })
+      });
+    }
   }
 
   static getDerivedStateFromProps(newProps, prevState) {
@@ -52,15 +65,18 @@ export default class CatchForm extends Component {
     return null;
   }
 
-  onChange = event => {
-    let state = {};
-    state[event.target.name] = event.target.value;
-    this.setState(state);
-    if (event.target.name === 'pokemon' && event.target.value.length > 0) {
-      this.props.updatePokeData(event.target.value);
+  onDropdownChange = (event, data) => {
+    if (data.name === 'pokemon') {
+      this.setState({ pokemon: data.value });
+      this.props.updatePokeData(data.value);
     }
   };
 
+  onTextareaChange = event => {
+    let state = {};
+    state[event.target.name] = event.target.value;
+    this.setState(state);
+  };
 
   submit = () => {
     // Validation
@@ -147,13 +163,18 @@ export default class CatchForm extends Component {
             <Form id="catch_form">
               <Form.Field>
                 <label>Pokemon</label>
-                <input
-                  type="text"
+                <Dropdown
                   name="pokemon"
-                  onChange={this.onChange}
+                  onChange={this.onDropdownChange}
                   value={this.state.pokemon}
+                  placeholder="Select Pokemon"
+                  fluid
+                  search
+                  selection
+                  options={this.state.pokeOptions}
                 />
               </Form.Field>
+
               <Form.Field>
                 <label>Latitude</label>
                 <input
@@ -176,7 +197,7 @@ export default class CatchForm extends Component {
                 <label>Decription</label>
                 <textarea
                   name="description"
-                  onChange={this.onChange}
+                  onChange={this.onTextareaChange}
                   value={this.state.description}
                   form="tasks_form"
                 />
@@ -185,9 +206,7 @@ export default class CatchForm extends Component {
             </Form>
           </Grid.Column>
           <Grid.Column width={8}>
-            <PokeProfile
-              pokemon={this.props.pokeData}
-            />
+            <PokeProfile pokemon={this.props.pokeData} />
           </Grid.Column>
         </Grid.Row>
       </Grid>

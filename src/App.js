@@ -15,12 +15,26 @@ class App extends Component {
       catches: [],
       pickedLocation: null,
       pickedCatch: null,
-      pokeData: null
+      pokeData: null,
+      allPokeList: []
     };
   }
 
   componentDidMount() {
     this.getCatches();
+
+    this.pokedex
+      .getPokemonsList()
+      .then(response => {
+        const allPokeList = [];
+        response.results.forEach(pokemon => {
+          allPokeList.push(pokemon.name);
+        });
+        this.setState({ allPokeList });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   resetPicks = () => {
@@ -40,7 +54,7 @@ class App extends Component {
       .then(response => {
         this.setState({ pokeData: response });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
         this.setState({ pokeData: null });
       });
@@ -172,6 +186,7 @@ class App extends Component {
           pokeData={this.state.pokeData}
           updatePokeData={this.updatePokeData}
           resetPokeData={this.resetPokeData}
+          allPokeList={this.state.allPokeList}
         />
       </div>
     );

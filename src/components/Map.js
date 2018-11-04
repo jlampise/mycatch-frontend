@@ -6,7 +6,6 @@ import './Map.css';
 const HERE = [60.21172186425134, 24.817264974117283];
 
 export default class Map extends Component {
-
   handleClick = e => {
     this.props.pickNewLocation(e.latlng.lat, e.latlng.lng);
   };
@@ -28,7 +27,11 @@ export default class Map extends Component {
             icon={Icons.pokeIcon(c.pokemon)}
             key={c._id}
             id={c._id}
-            opacity={0.7}
+            opacity={
+              this.props.pickedCatch && this.props.pickedCatch._id === c._id
+                ? 1.0
+                : 0.6
+            }
             position={[c.lat, c.lng]}
             onClick={this.handleMarkerClick}
           />
