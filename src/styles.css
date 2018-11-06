@@ -1,6 +1,23 @@
 /* .main-container{
   border: solid 1px red;
 } */
+.navbar-container {
+  border: solid 2px rgb(143, 143, 143);
+  border-radius: 7px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.navbar-container h1 {
+  font-family: 'Spicy Rice', cursive;
+  font-size: 5em;
+}
+
+.login-form-container {
+  border: solid 2px rgb(143, 143, 143);
+  border-radius: 7px;
+  padding: 0px 200px 0px 200px;
+  text-align: center;
+}
 
 .dashboard-container {
   border: solid 2px rgb(143, 143, 143);
@@ -10,7 +27,7 @@
 .catch-form-container {
   border: solid 1px rgb(211, 211, 211);
   border-radius: 3px;
-  background-color: rgba(0,0,0,.05);
+  background-color: rgba(0, 0, 0, 0.05);
   height: 515px;
 }
 
@@ -34,15 +51,3 @@ img {
   height: 515px;
   width: 100%;
 }
-
-.login-form {
-  border: dashed 2px blue;
-  padding: 10px 200px 10px 200px;
-  text-align: center;
-
-}
-
-
-
-
-

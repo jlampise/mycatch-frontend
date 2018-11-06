@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Grid, Form, Button } from 'semantic-ui-react';
 
 export default class LoginForm extends Component {
   constructor(props) {
@@ -10,9 +10,9 @@ export default class LoginForm extends Component {
     };
   }
 
-  onChange = event => {
+  onChange = (event, data) => {
     let state = {};
-    state[event.target.name] = event.target.value;
+    state[data.name] = data.value;
     this.setState(state);
   };
 
@@ -30,34 +30,46 @@ export default class LoginForm extends Component {
     this.setState({ username: '', password: '' });
   };
 
+  isValidForm() {
+    return this.state.username.length > 0 && this.state.password.length > 0;
+  }
+
   render() {
     return (
-      <Form className="login-form">
-        <Form.Field>
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={this.state.username}
-            onChange={this.onChange}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={this.state.password}
-            onChange={this.onChange}
-          />
-        </Form.Field>
-        <Button onClick={this.onSubmit} name="register">
-          Register
-        </Button>
-        <Button onClick={this.onSubmit} name="login">
-          Login
-        </Button>
-      </Form>
+      <Grid.Row className="login-form-container">
+        <Grid.Column width={16}>
+          <Form className="login-form">
+            <Form.Input
+              label="Username"
+              type="text"
+              name="username"
+              value={this.state.username}
+              onChange={this.onChange}
+            />
+            <Form.Input
+              label="Password"
+              type="password"
+              name="password"
+              value={this.state.password}
+              onChange={this.onChange}
+            />
+            <Button
+              disabled={!this.isValidForm()}
+              onClick={this.onSubmit}
+              name="register"
+            >
+              Register
+            </Button>
+            <Button
+              disabled={!this.isValidForm()}
+              onClick={this.onSubmit}
+              name="login"
+            >
+              Login
+            </Button>
+          </Form>
+        </Grid.Column>
+      </Grid.Row>
     );
   }
 }

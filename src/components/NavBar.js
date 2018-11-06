@@ -8,14 +8,14 @@ export default class NavBar extends Component {
 
   render() {
     return (
-      <Grid>
-        <Grid.Column width={8}>
+      <Grid.Row className="navbar-container">
+        <Grid.Column width={14}>
           <h1>MyCatch</h1>
         </Grid.Column>
-        <Grid.Column width={8}>
+        <Grid.Column width={2}>
           <Button onClick={this.handleLogout}>Logout</Button>
         </Grid.Column>
-      </Grid>
+      </Grid.Row>
     );
   }
 }
