@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Dropdown } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 
 export default class CatchForm extends Component {
   constructor(props) {
@@ -73,10 +73,10 @@ export default class CatchForm extends Component {
     }
   };
 
-  onTextareaChange = event => {
-    let state = {};
-    state[event.target.name] = event.target.value;
-    this.setState(state);
+  onTextAreaChange = (event, data) => {
+    if (data.name === 'description') {
+      this.setState({ description: data.value });
+    }
   };
 
   submit = () => {
@@ -169,49 +169,50 @@ export default class CatchForm extends Component {
   render() {
     return (
       <Form id="catch_form">
-        <Form.Field>
-          <label>Pokemon</label>
-          <Dropdown
-            disabled={this.isReadOnly()}
-            name="pokemon"
-            onChange={this.onDropdownChange}
-            value={this.state.pokemon}
-            placeholder="Select Pokemon"
-            fluid
-            search
-            selection
-            options={this.state.pokeOptions}
-          />
-        </Form.Field>
+        <Form.Dropdown
+          label="Pokemon"
+          disabled={this.isReadOnly()}
+          name="pokemon"
+          onChange={this.onDropdownChange}
+          value={this.state.pokemon}
+          placeholder="Select Pokemon"
+          fluid
+          search
+          selection
+          options={this.state.pokeOptions}
+        />
 
-        <Form.Field>
-          <label>Trainer</label>
-          <input
-            disabled
-            type="text"
-            name="trainer"
-            value={this.state.trainer}
-          />
-        </Form.Field>
+        <Form.Input
+          placeholder="Automatically filled"
+          label="Trainer"
+          disabled
+          type="text"
+          name="trainer"
+          value={this.state.trainer}
+        />
 
-        <Form.Field>
-          <label>Latitude</label>
-          <input disabled type="text" name="latitude" value={this.state.lat} />
-        </Form.Field>
-        <Form.Field>
-          <label>Longitude</label>
-          <input disabled type="text" name="longitude" value={this.state.lng} />
-        </Form.Field>
-        <Form.Field>
-          <label>Decription</label>
-          <textarea
-            placeholder="Record your memories..."
-            disabled={this.isReadOnly()}
-            name="description"
-            onChange={this.onTextareaChange}
-            value={this.state.description}
-          />
-        </Form.Field>
+        <Form.Input
+          label="Latitude"
+          disabled
+          type="text"
+          value={this.state.lat}
+        />
+
+        <Form.Input
+          label="Longitude"
+          disabled
+          type="text"
+          value={this.state.lng}
+        />
+
+        <Form.TextArea
+          label="Description"
+          placeholder="Record your memories..."
+          disabled={this.isReadOnly()}
+          name="description"
+          onChange={this.onTextAreaChange}
+          value={this.state.description}
+        />
         <Form.Field>{this.renderButtons()}</Form.Field>
       </Form>
     );
