@@ -13,6 +13,32 @@ export default class Map extends Component {
     this.props.pickOldCatch(e.target.options.id);
   };
 
+  getIconOpacity = pokeCatch => {
+    if (
+      this.props.pickedCatch &&
+      this.props.pickedCatch._id === pokeCatch._id
+    ) {
+      return 1.0;
+    } else if (pokeCatch.creator === this.props.currentUser) {
+      return 1.0;
+    } else {
+      return 1.0;
+    }
+  };
+
+  getIconSize = pokeCatch => {
+    if (
+      this.props.pickedCatch &&
+      this.props.pickedCatch._id === pokeCatch._id
+    ) {
+      return 110;
+    } else if (pokeCatch.creator === this.props.currentUser) {
+      return 70;
+    } else {
+      return 50;
+    }
+  };
+
   render() {
     return (
       <LeafletMap
@@ -23,14 +49,10 @@ export default class Map extends Component {
       >
         {this.props.catches.map(c => (
           <Marker
-            icon={Icons.pokeIcon(c.pokemon)}
+            icon={Icons.pokeIcon(c.pokemon, this.getIconSize(c))}
             key={c._id}
             id={c._id}
-            opacity={
-              this.props.pickedCatch && this.props.pickedCatch._id === c._id
-                ? 1.0
-                : 0.6
-            }
+            opacity={this.getIconOpacity(c)}
             position={[c.lat, c.lng]}
             onClick={this.handleMarkerClick}
           />

@@ -1,12 +1,12 @@
 import L from 'leaflet';
 
 
-const pokeIcon = pokemon => {
+const pokeIcon = (pokemon, size = 80) => {
 
   return L.icon({
     iconUrl: `https://img.pokemondb.net/sprites/x-y/normal/${pokemon}.png`,
-    iconSize: [80, 80],
-    iconAnchor: [40, 40]
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2]
   });
 };
 

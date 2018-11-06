@@ -15,6 +15,7 @@ export default class Dashboard extends Component {
             pickOldCatch={this.props.pickOldCatch}
             pickedLocation={this.props.pickedLocation}
             pickedCatch={this.props.pickedCatch}
+            currentUser={this.props.currentUser}
           />
         </Grid.Column>
         <Grid.Column width={4} className="catch-form-container">
