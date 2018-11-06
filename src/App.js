@@ -16,26 +16,40 @@ class App extends Component {
       pickedLocation: null,
       pickedCatch: null,
       pokeData: null,
-      allPokeList: []
+      allPokeList: [],
+      isLogged: false,
+      token: ''
     };
   }
 
   componentDidMount() {
-    this.getCatches();
-
-    this.pokedex
-      .getPokemonsList()
-      .then(response => {
-        const allPokeList = [];
-        response.results.forEach(pokemon => {
-          allPokeList.push(pokemon.name);
-        });
-        this.setState({ allPokeList });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    if (sessionStorage.getItem('isLogged')) {
+      const temp = sessionStorage.getItem('isLogged');
+      const isLogged = temp === 'true' ? true : false;
+      const token = sessionStorage.getItem('token');
+      this.setState({ isLogged, token });
+      if (isLogged) {
+        this.getCatches(token);
+        this.pokedex
+          .getPokemonsList()
+          .then(response => {
+            const allPokeList = [];
+            response.results.forEach(pokemon => {
+              allPokeList.push(pokemon.name);
+            });
+            this.setState({ allPokeList });
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
+    }
   }
+
+  setSessionStorage = (isLogged, token) => {
+    sessionStorage.setItem('isLogged', isLogged ? 'true' : 'false');
+    sessionStorage.setItem('token', token);
+  };
 
   resetPicks = () => {
     this.setState({
@@ -77,11 +91,15 @@ class App extends Component {
     this.setState({ pickedLocation: { lat, lng }, pickedCatch: null });
   };
 
-  getCatches = () => {
+  getCatches = token => {
+    let t = this.state.token;
+    if (token) {
+      t = token;
+    }
     const fetchObject = {
       method: 'GET',
       mode: 'cors',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json', token: t }
     };
 
     fetch('/api/catches', fetchObject)
@@ -109,7 +127,8 @@ class App extends Component {
       method: 'POST',
       mode: 'cors',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token: this.state.token
       },
       body: JSON.stringify(c)
     };
@@ -132,7 +151,8 @@ class App extends Component {
       method: 'PUT',
       mode: 'cors',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token: this.state.token
       },
       body: JSON.stringify(newData)
     };
@@ -170,6 +190,97 @@ class App extends Component {
       });
   };
 
+  register = user => {
+    const registerObject = {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    };
+
+    fetch('/auth/register', registerObject)
+      .then(response => {
+        if (response.ok) {
+          alert('Register successful');
+        }
+        if (response.status === 409) {
+          alert('Username already in use');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  login = user => {
+    const loginObject = {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    };
+
+    fetch('/auth/login', loginObject)
+      .then(response => {
+        if (response.ok) {
+          response
+            .json()
+            .then(data => {
+              this.setState({
+                isLogged: true,
+                token: data.token
+              });
+              this.setSessionStorage(true, data.token);
+
+              this.getCatches();
+              this.pokedex
+                .getPokemonsList()
+                .then(response => {
+                  const allPokeList = [];
+                  response.results.forEach(pokemon => {
+                    allPokeList.push(pokemon.name);
+                  });
+                  this.setState({ allPokeList });
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        } else {
+          alert('Login failed');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  logout = () => {
+    const logoutObject = {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        token: this.state.token
+      }
+    };
+
+    fetch('/auth/logout', logoutObject)
+      .then(response => {
+        this.setState({
+          isLogged: false,
+          token: ''
+        });
+        this.setSessionStorage(false, '');
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   render() {
     return (
       <div className="App">
@@ -187,6 +298,10 @@ class App extends Component {
           updatePokeData={this.updatePokeData}
           resetPokeData={this.resetPokeData}
           allPokeList={this.state.allPokeList}
+          register={this.register}
+          login={this.login}
+          logout={this.logout}
+          isLogged={this.state.isLogged}
         />
       </div>
     );

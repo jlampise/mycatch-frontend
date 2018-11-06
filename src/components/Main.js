@@ -1,41 +1,66 @@
 import React, { Component } from 'react';
+import Dashboard from './Dashboard';
+import LoginForm from './LoginForm';
+import { Switch, Route, Redirect } from 'react-router';
 import { Grid } from 'semantic-ui-react';
-import Map from './Map';
-import CatchForm from './CatchForm';
+import NavBar from './NavBar';
 import './Main.css';
 
 export default class Main extends Component {
   render() {
     return (
-      <div>
-        <Grid container>
-          <Grid.Row>
-            <Grid.Column width={8}>
-              <Map
-                catches={this.props.catches}
-                pickNewLocation={this.props.pickNewLocation}
-                pickOldCatch={this.props.pickOldCatch}
-                pickedLocation={this.props.pickedLocation}
-                pickedCatch={this.props.pickedCatch}
+      <Grid container>
+        <Grid.Row>
+          <Grid.Column width={16}>
+            <NavBar isLogged={this.props.isLogged} logout={this.props.logout} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={16}>
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={() => {
+                  return !this.props.isLogged ? (
+                    <LoginForm
+                      register={this.props.register}
+                      login={this.props.login}
+                    />
+                  ) : (
+                    <Redirect to="/dashboard" />
+                  );
+                }}
               />
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <CatchForm
-                addCatch={this.props.addCatch}
-                updateCatch={this.props.updateCatch}
-                deleteCatch={this.props.deleteCatch}
-                pickedLocation={this.props.pickedLocation}
-                pickedCatch={this.props.pickedCatch}
-                resetPicks={this.props.resetPicks}
-                pokeData={this.props.pokeData}
-                updatePokeData={this.props.updatePokeData}
-                resetPokeData={this.props.resetPokeData}
-                allPokeList={this.props.allPokeList}
+              <Route
+                exact
+                path="/dashboard"
+                render={() => {
+                  return this.props.isLogged ? (
+                    <Dashboard
+                      addCatch={this.props.addCatch}
+                      updateCatch={this.props.updateCatch}
+                      deleteCatch={this.props.deleteCatch}
+                      catches={this.props.catches}
+                      pickedLocation={this.props.pickedLocation}
+                      pickNewLocation={this.props.pickNewLocation}
+                      pickedCatch={this.props.pickedCatch}
+                      pickOldCatch={this.props.pickOldCatch}
+                      resetPicks={this.props.resetPicks}
+                      pokeData={this.props.pokeData}
+                      updatePokeData={this.props.updatePokeData}
+                      resetPokeData={this.props.resetPokeData}
+                      allPokeList={this.props.allPokeList}
+                    />
+                  ) : (
+                    <Redirect to="/" />
+                  );
+                }}
               />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
+            </Switch>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }
