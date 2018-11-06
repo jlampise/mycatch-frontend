@@ -4,13 +4,8 @@
 
 .dashboard-container {
   border: solid 2px rgb(143, 143, 143);
-  /* background-color: rgb(255, 168, 168); */
   border-radius: 7px;
 }
-
-/* .catch-container {
-  border: dashed 2px yellow;
-} */
 
 .catch-form-container {
   border: solid 1px rgb(211, 211, 211);

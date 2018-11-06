@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Form, Button, Dropdown } from 'semantic-ui-react';
-import PokeProfile from './PokeProfile';
+import { Form, Button, Dropdown } from 'semantic-ui-react';
 
 export default class CatchForm extends Component {
   constructor(props) {
@@ -169,71 +168,52 @@ export default class CatchForm extends Component {
 
   render() {
     return (
-      <Grid className="catch-container">
-        <Grid.Row>
-          <Grid.Column width={8} className="catch-form-container">
-            <Form id="catch_form">
-              <Form.Field>
-                <label>Pokemon</label>
-                <Dropdown
-                  disabled={this.isReadOnly()}
-                  name="pokemon"
-                  onChange={this.onDropdownChange}
-                  value={this.state.pokemon}
-                  placeholder="Select Pokemon"
-                  fluid
-                  search
-                  selection
-                  options={this.state.pokeOptions}
-                />
-              </Form.Field>
+      <Form id="catch_form">
+        <Form.Field>
+          <label>Pokemon</label>
+          <Dropdown
+            disabled={this.isReadOnly()}
+            name="pokemon"
+            onChange={this.onDropdownChange}
+            value={this.state.pokemon}
+            placeholder="Select Pokemon"
+            fluid
+            search
+            selection
+            options={this.state.pokeOptions}
+          />
+        </Form.Field>
 
-              <Form.Field>
-                <label>Trainer</label>
-                <input
-                  disabled
-                  type="text"
-                  name="trainer"
-                  value={this.state.trainer}
-                />
-              </Form.Field>
+        <Form.Field>
+          <label>Trainer</label>
+          <input
+            disabled
+            type="text"
+            name="trainer"
+            value={this.state.trainer}
+          />
+        </Form.Field>
 
-              <Form.Field>
-                <label>Latitude</label>
-                <input
-                  disabled
-                  type="text"
-                  name="latitude"
-                  value={this.state.lat}
-                />
-              </Form.Field>
-              <Form.Field>
-                <label>Longitude</label>
-                <input
-                  disabled
-                  type="text"
-                  name="longitude"
-                  value={this.state.lng}
-                />
-              </Form.Field>
-              <Form.Field>
-                <label>Decription</label>
-                <textarea
-                  placeholder="Record your memories..."
-                  disabled={this.isReadOnly()}
-                  name="description"
-                  onChange={this.onTextareaChange}
-                  value={this.state.description}
-                />
-              </Form.Field>
-              <Form.Field>{this.renderButtons()}</Form.Field>
-            </Form>
-          </Grid.Column>
-          <Grid.Column width={8}>
-            <PokeProfile pokemon={this.props.pokeData} />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+        <Form.Field>
+          <label>Latitude</label>
+          <input disabled type="text" name="latitude" value={this.state.lat} />
+        </Form.Field>
+        <Form.Field>
+          <label>Longitude</label>
+          <input disabled type="text" name="longitude" value={this.state.lng} />
+        </Form.Field>
+        <Form.Field>
+          <label>Decription</label>
+          <textarea
+            placeholder="Record your memories..."
+            disabled={this.isReadOnly()}
+            name="description"
+            onChange={this.onTextareaChange}
+            value={this.state.description}
+          />
+        </Form.Field>
+        <Form.Field>{this.renderButtons()}</Form.Field>
+      </Form>
     );
   }
 }

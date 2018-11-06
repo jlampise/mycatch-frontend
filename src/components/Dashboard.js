@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import Map from './Map';
 import CatchForm from './CatchForm';
+import PokeProfile from './PokeProfile';
 
 export default class Dashboard extends Component {
   render() {
@@ -18,7 +19,7 @@ export default class Dashboard extends Component {
                 pickedCatch={this.props.pickedCatch}
               />
             </Grid.Column>
-            <Grid.Column width={8}>
+            <Grid.Column width={4} className="catch-form-container">
               <CatchForm
                 addCatch={this.props.addCatch}
                 updateCatch={this.props.updateCatch}
@@ -26,12 +27,14 @@ export default class Dashboard extends Component {
                 pickedLocation={this.props.pickedLocation}
                 pickedCatch={this.props.pickedCatch}
                 resetPicks={this.props.resetPicks}
-                pokeData={this.props.pokeData}
                 updatePokeData={this.props.updatePokeData}
                 resetPokeData={this.props.resetPokeData}
                 allPokeList={this.props.allPokeList}
                 currentUser={this.props.currentUser}
               />
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <PokeProfile pokemon={this.props.pokeData} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
