@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Form, Button, Dropdown } from 'semantic-ui-react';
 import PokeProfile from './PokeProfile';
-import './CatchForm.js';
 
 export default class CatchForm extends Component {
   constructor(props) {
@@ -157,9 +156,9 @@ export default class CatchForm extends Component {
 
   render() {
     return (
-      <Grid>
+      <Grid className="catch-container">
         <Grid.Row>
-          <Grid.Column width={8}>
+          <Grid.Column width={8} className="catch-form-container">
             <Form id="catch_form">
               <Form.Field>
                 <label>Pokemon</label>

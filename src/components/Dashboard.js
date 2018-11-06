@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import Map from './Map';
 import CatchForm from './CatchForm';
-import './Dashboard.css';
 
 export default class Dashboard extends Component {
   render() {
     return (
       <div>
-        <Grid container>
+        <Grid container className="dashboard-container">
           <Grid.Row>
             <Grid.Column width={8}>
               <Map

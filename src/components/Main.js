@@ -4,16 +4,15 @@ import LoginForm from './LoginForm';
 import { Switch, Route, Redirect } from 'react-router';
 import { Grid } from 'semantic-ui-react';
 import NavBar from './NavBar';
-import './Main.css';
 
 export default class Main extends Component {
   render() {
     return (
-      <Grid container>
+      <Grid container className="main-container">
         <Grid.Row>
-          <Grid.Column width={16}>
+          {/* <Grid.Column width={16}> */}
             <NavBar isLogged={this.props.isLogged} logout={this.props.logout} />
-          </Grid.Column>
+          {/* </Grid.Column> */}
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={16}>

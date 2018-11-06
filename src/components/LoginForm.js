@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'semantic-ui-react';
-import './LoginForm.css';
 
 export default class LoginForm extends Component {
   constructor(props) {
@@ -33,7 +32,7 @@ export default class LoginForm extends Component {
 
   render() {
     return (
-      <Form>
+      <Form className="login-form">
         <Form.Field>
           <label>Username</label>
           <input

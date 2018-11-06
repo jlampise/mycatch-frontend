@@ -1,0 +1,53 @@
+/* .main-container{
+  border: solid 1px red;
+} */
+
+.dashboard-container {
+  border: solid 2px rgb(143, 143, 143);
+  /* background-color: rgb(255, 168, 168); */
+  border-radius: 7px;
+}
+
+/* .catch-container {
+  border: dashed 2px yellow;
+} */
+
+.catch-form-container {
+  border: solid 1px rgb(211, 211, 211);
+  border-radius: 3px;
+  background-color: rgba(0,0,0,.05);
+  height: 515px;
+}
+
+.ui.button {
+  width: 72px;
+  padding: 10px 5px 10px 5px;
+  margin: 25px 5px 5px 5px;
+}
+
+.ui.card {
+  height: 515px;
+}
+
+img {
+  height: 250px;
+}
+
+#leaflet-map {
+  border: solid 1px rgb(211, 211, 211);
+  border-radius: 3px;
+  height: 515px;
+  width: 100%;
+}
+
+.login-form {
+  border: dashed 2px blue;
+  padding: 10px 200px 10px 200px;
+  text-align: center;
+
+}
+
+
+
+
+

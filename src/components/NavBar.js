@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Grid, Button } from 'semantic-ui-react';
-import './NavBar.css';
 
 export default class NavBar extends Component {
   handleLogout = () => {

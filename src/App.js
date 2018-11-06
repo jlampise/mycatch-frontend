@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Main from './components/Main.js';
 import Pokedex from 'pokedex-promise-v2';
-import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -174,7 +173,10 @@ class App extends Component {
     const deleteCatch = {
       method: 'DELETE',
       mode: 'cors',
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json',
+        token: this.state.token
+      }
     };
 
     fetch('/api/catches/' + id, deleteCatch)
@@ -269,7 +271,7 @@ class App extends Component {
     };
 
     fetch('/auth/logout', logoutObject)
-      .then(response => {
+      .then(() => {
         this.setState({
           isLogged: false,
           token: ''
