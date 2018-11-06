@@ -5,7 +5,6 @@ import PokeProfile from './PokeProfile';
 export default class CatchForm extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       _id: 0,
       pokemon: '',
@@ -102,14 +101,7 @@ export default class CatchForm extends Component {
     } else {
       this.props.addCatch(newCatch);
     }
-    this.setState({
-      _id: 0,
-      pokemon: '',
-      trainer: '',
-      description: '',
-      lat: 0,
-      lng: 0
-    });
+    this.resetState();
   };
 
   delete = () => {
@@ -117,20 +109,17 @@ export default class CatchForm extends Component {
       this.props.resetPicks();
       this.props.resetPokeData();
       this.props.deleteCatch(this.state._id);
-      this.setState({
-        _id: 0,
-        pokemon: '',
-        trainer: '',
-        description: '',
-        lat: 0,
-        lng: 0
-      });
+      this.resetState();
     }
   };
 
   cancel = () => {
     this.props.resetPicks();
     this.props.resetPokeData();
+    this.resetState();
+  };
+
+  resetState() {
     this.setState({
       _id: 0,
       pokemon: '',
@@ -139,7 +128,7 @@ export default class CatchForm extends Component {
       lat: 0,
       lng: 0
     });
-  };
+  }
 
   isValidForm() {
     return this.state.pokemon !== '' && this.state.trainer !== '';
@@ -152,7 +141,10 @@ export default class CatchForm extends Component {
     if (this.props.pickedCatch) {
       return (
         <div>
-          <Button disabled={!this.isValidForm() || this.isReadOnly()} onClick={this.submit}>
+          <Button
+            disabled={!this.isValidForm() || this.isReadOnly()}
+            onClick={this.submit}
+          >
             Save
           </Button>
           <Button disabled={this.isReadOnly()} onClick={this.delete}>
@@ -166,7 +158,9 @@ export default class CatchForm extends Component {
     } else if (this.props.pickedLocation) {
       return (
         <div>
-          <Button disabled={!this.isValidForm()} onClick={this.submit}>Create</Button>
+          <Button disabled={!this.isValidForm()} onClick={this.submit}>
+            Create
+          </Button>
           <Button onClick={this.cancel}>Cancel</Button>
         </div>
       );
@@ -225,14 +219,14 @@ export default class CatchForm extends Component {
               <Form.Field>
                 <label>Decription</label>
                 <textarea
+                  placeholder="Record your memories..."
                   disabled={this.isReadOnly()}
                   name="description"
                   onChange={this.onTextareaChange}
                   value={this.state.description}
-                  form="tasks_form"
                 />
               </Form.Field>
-              {this.renderButtons()}
+              <Form.Field>{this.renderButtons()}</Form.Field>
             </Form>
           </Grid.Column>
           <Grid.Column width={8}>
