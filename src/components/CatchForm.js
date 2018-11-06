@@ -9,6 +9,7 @@ export default class CatchForm extends Component {
     this.state = {
       _id: 0,
       pokemon: '',
+      trainer: '',
       description: '',
       lat: 0,
       lng: 0,
@@ -36,6 +37,7 @@ export default class CatchForm extends Component {
         return {
           _id: c._id,
           pokemon: c.pokemon,
+          trainer: c.creator,
           description: c.description,
           lat: c.lat,
           lng: c.lng
@@ -47,6 +49,7 @@ export default class CatchForm extends Component {
         return {
           _id: 0,
           pokemon: '',
+          trainer: newProps.currentUser,
           description: '',
           lat: newProps.pickedLocation.lat,
           lng: newProps.pickedLocation.lng
@@ -56,6 +59,7 @@ export default class CatchForm extends Component {
         prevState.lng !== newProps.pickedLocation.lng
       ) {
         return {
+          trainer: newProps.currentUser,
           lat: newProps.pickedLocation.lat,
           lng: newProps.pickedLocation.lng
         };
@@ -78,8 +82,7 @@ export default class CatchForm extends Component {
   };
 
   submit = () => {
-    // Validation
-    if (this.state.pokemon.length === 0) {
+    if (!this.isValidForm()) {
       return;
     }
 
@@ -102,6 +105,7 @@ export default class CatchForm extends Component {
     this.setState({
       _id: 0,
       pokemon: '',
+      trainer: '',
       description: '',
       lat: 0,
       lng: 0
@@ -116,6 +120,7 @@ export default class CatchForm extends Component {
       this.setState({
         _id: 0,
         pokemon: '',
+        trainer: '',
         description: '',
         lat: 0,
         lng: 0
@@ -129,25 +134,39 @@ export default class CatchForm extends Component {
     this.setState({
       _id: 0,
       pokemon: '',
+      trainer: '',
       description: '',
       lat: 0,
       lng: 0
     });
   };
 
+  isValidForm() {
+    return this.state.pokemon !== '' && this.state.trainer !== '';
+  }
+  isReadOnly() {
+    return this.props.currentUser !== this.state.trainer;
+  }
+
   renderButtons() {
     if (this.props.pickedCatch) {
       return (
         <div>
-          <Button onClick={this.submit}>Save</Button>
-          <Button onClick={this.delete}>Delete</Button>
-          <Button onClick={this.cancel}>Cancel</Button>
+          <Button disabled={!this.isValidForm() || this.isReadOnly()} onClick={this.submit}>
+            Save
+          </Button>
+          <Button disabled={this.isReadOnly()} onClick={this.delete}>
+            Delete
+          </Button>
+          <Button disabled={this.isReadOnly()} onClick={this.cancel}>
+            Cancel
+          </Button>
         </div>
       );
     } else if (this.props.pickedLocation) {
       return (
         <div>
-          <Button onClick={this.submit}>Create</Button>
+          <Button disabled={!this.isValidForm()} onClick={this.submit}>Create</Button>
           <Button onClick={this.cancel}>Cancel</Button>
         </div>
       );
@@ -163,6 +182,7 @@ export default class CatchForm extends Component {
               <Form.Field>
                 <label>Pokemon</label>
                 <Dropdown
+                  disabled={this.isReadOnly()}
                   name="pokemon"
                   onChange={this.onDropdownChange}
                   value={this.state.pokemon}
@@ -171,6 +191,16 @@ export default class CatchForm extends Component {
                   search
                   selection
                   options={this.state.pokeOptions}
+                />
+              </Form.Field>
+
+              <Form.Field>
+                <label>Trainer</label>
+                <input
+                  disabled
+                  type="text"
+                  name="trainer"
+                  value={this.state.trainer}
                 />
               </Form.Field>
 
@@ -195,6 +225,7 @@ export default class CatchForm extends Component {
               <Form.Field>
                 <label>Decription</label>
                 <textarea
+                  disabled={this.isReadOnly()}
                   name="description"
                   onChange={this.onTextareaChange}
                   value={this.state.description}

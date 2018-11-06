@@ -2,10 +2,6 @@ import React from 'react';
 import { Card, Image } from 'semantic-ui-react';
 
 const PokeProfile = ({ pokemon }) => {
-  // if (!pokemon) {
-  //   return null;
-  // }
-
   let typeStr = '';
   let src = '';
   let name = '';
@@ -21,8 +17,6 @@ const PokeProfile = ({ pokemon }) => {
     name = pokemon.name;
     id = 'ID: ' + pokemon.id;
   }
-
-  
 
   return (
     <Card>

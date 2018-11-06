@@ -30,6 +30,7 @@ export default class Dashboard extends Component {
                 updatePokeData={this.props.updatePokeData}
                 resetPokeData={this.props.resetPokeData}
                 allPokeList={this.props.allPokeList}
+                currentUser={this.props.currentUser}
               />
             </Grid.Column>
           </Grid.Row>

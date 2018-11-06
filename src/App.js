@@ -17,7 +17,8 @@ class App extends Component {
       pokeData: null,
       allPokeList: [],
       isLogged: false,
-      token: ''
+      token: '',
+      currentUser: ''
     };
   }
 
@@ -26,7 +27,8 @@ class App extends Component {
       const temp = sessionStorage.getItem('isLogged');
       const isLogged = temp === 'true' ? true : false;
       const token = sessionStorage.getItem('token');
-      this.setState({ isLogged, token });
+      const currentUser = sessionStorage.getItem('currentUser');
+      this.setState({ isLogged, token, currentUser });
       if (isLogged) {
         this.getCatches(token);
         this.pokedex
@@ -45,9 +47,10 @@ class App extends Component {
     }
   }
 
-  setSessionStorage = (isLogged, token) => {
+  setSessionStorage = (isLogged, token, currentUser) => {
     sessionStorage.setItem('isLogged', isLogged ? 'true' : 'false');
     sessionStorage.setItem('token', token);
+    sessionStorage.setItem('currentUser', currentUser);
   };
 
   resetPicks = () => {
@@ -230,9 +233,10 @@ class App extends Component {
             .then(data => {
               this.setState({
                 isLogged: true,
-                token: data.token
+                token: data.token,
+                currentUser: user.username
               });
-              this.setSessionStorage(true, data.token);
+              this.setSessionStorage(true, data.token, user.username);
 
               this.getCatches();
               this.pokedex
@@ -274,9 +278,10 @@ class App extends Component {
       .then(() => {
         this.setState({
           isLogged: false,
-          token: ''
+          token: '',
+          currentUser: ''
         });
-        this.setSessionStorage(false, '');
+        this.setSessionStorage(false, '', '');
       })
       .catch(error => {
         console.error(error);
@@ -304,6 +309,7 @@ class App extends Component {
           login={this.login}
           logout={this.logout}
           isLogged={this.state.isLogged}
+          currentUser={this.state.currentUser}
         />
       </div>
     );

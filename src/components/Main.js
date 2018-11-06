@@ -10,9 +10,7 @@ export default class Main extends Component {
     return (
       <Grid container className="main-container">
         <Grid.Row>
-          {/* <Grid.Column width={16}> */}
-            <NavBar isLogged={this.props.isLogged} logout={this.props.logout} />
-          {/* </Grid.Column> */}
+          <NavBar isLogged={this.props.isLogged} logout={this.props.logout} />
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={16}>
@@ -50,6 +48,7 @@ export default class Main extends Component {
                       updatePokeData={this.props.updatePokeData}
                       resetPokeData={this.props.resetPokeData}
                       allPokeList={this.props.allPokeList}
+                      currentUser={this.props.currentUser}
                     />
                   ) : (
                     <Redirect to="/" />
