@@ -13,7 +13,12 @@ export default class NavBar extends Component {
           <h1>MyCatch</h1>
         </Grid.Column>
         <Grid.Column width={2}>
-          <Button onClick={this.handleLogout}>Logout</Button>
+          {this.props.isLogged ? (
+            <Button onClick={this.handleLogout}>
+              Logout
+              <p>({this.props.currentUser})</p>
+            </Button>
+          ) : null}
         </Grid.Column>
       </Grid.Row>
     );

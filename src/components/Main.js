@@ -9,7 +9,11 @@ export default class Main extends Component {
   render() {
     return (
       <Grid container className="main-container">
-        <NavBar isLogged={this.props.isLogged} logout={this.props.logout} />
+        <NavBar
+          isLogged={this.props.isLogged}
+          currentUser={this.props.currentUser}
+          logout={this.props.logout}
+        />
         <Switch>
           <Route
             exact
