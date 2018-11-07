@@ -2,7 +2,7 @@
 ## What is MyCatch?
 This is a very simple project to try out some map, external API and local authentication stuff.
 
-This is a frontend of the application. Backend API-server is in another repository: TODO
+This is a frontend of the application. Backend API-server is in another repository: https://github.com/jlampise/mycatch-backend
 
 ## What does the application do?
 
